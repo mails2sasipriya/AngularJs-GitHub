@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html ng-app="gitHubApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>GitHub Application</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="app.css"/>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="gitHub/git.js"></script>
+    <script src="app.js"></script>
+</head>
+<body ng-controller="gitHubController">
+    <div class="container">
+        <div class="form-group">
+            <div> {{message}}</div>
+
+            <!--Input-->
+            <label for="usr">Search Git Repository:</label>
+            <input type="text" class="form-control" id="usr" placeholder="Enter term..." ng-model="serachTerm" ng-keydown="searchGit($event)" />
+
+            <!--Navigation-->
+                <div class="leftDiv" ng-show="showControls">
+                    <pagination
+                            ng-model="currentPage"
+                            total-items="data.length"
+                            max-size="maxSize"
+                            boundary-links="true">
+                    </pagination>
+                </div>
+            <!--Dropdown-->
+               <div class="rightDiv" ng-show="showControls">
+                <div class="dropdown">
+                    <select ng-model="selOption" ng-options="options.name for options in options" ng-change="sortRepo(selOption)"></select>
+                </div>
+                </div>
+        </div>
+        <div class="row">
+            <div ng-model="orderRepo" class="col-md-3" ng-repeat="repo in filteredRepo | orderBy: orderRepo">
+                <img alt="{{repo.full_name}}" width="130" height="120" ng-src="{{repo.owner.avatar_url}}"/>
+                {{repo.owner.login}}<br>
+                <img alt="Star/Fork" width="70" height="80" class="git" ng-src="images/gitImage1.png"/>{{repo.forks_count}}<br><br>
+                {{repo.stargazers_count}}</div>
+        </div>
+    </div>
+</body>
+</html>
